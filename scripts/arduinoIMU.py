@@ -19,25 +19,24 @@ class Arduino(object):
 	def BroadcastIMUInfo(self,lineParts):
 		partsCount = len(lineParts)
 		if (partsCount == 6): # $IMU,timestamp,w,x,y,z
-			pass
-		try:
-			q = Quaternion()
-			norm = math.sqrt(float(lineParts[2])**2 + float(lineParts[3])**2 + float(lineParts[4])**2 + float(lineParts[5])**2)
-			q.x = float(lineParts[3])/norm
-			q.y = float(lineParts[4])/norm
-			q.z = float(lineParts[5])/norm
-			q.w = float(lineParts[2])/norm
-			imu = imuq()
-			imu.header.stamp = rospy.Time.now()
-			imu.header.frame_id = "imu_base"
-			imu.arduinoTime = int(lineParts[1])
-			imu.q = q
+			try:
+				q = Quaternion()
+				norm = math.sqrt(float(lineParts[2])**2 + float(lineParts[3])**2 + float(lineParts[4])**2 + float(lineParts[5])**2)
+				q.x = float(lineParts[3])/norm
+				q.y = float(lineParts[4])/norm
+				q.z = float(lineParts[5])/norm
+				q.w = float(lineParts[2])/norm
+				imu = imuq()
+				imu.header.stamp = rospy.Time.now()
+				imu.header.frame_id = "imu_base"
+				imu.arduinoTime = int(lineParts[1])
+				imu.q = q
 
-			self._imu_pub.publish(imu)
-			self._ImuTransformBroadcaster.sendTransform((0.2,0.2,0.2),(imu.q.x,imu.q.y,imu.q.z,imu.q.w),rospy.Time.now(),"imu","base_link")
+				self._imu_pub.publish(imu)
+				self._ImuTransformBroadcaster.sendTransform((0.2,0.2,0.2),(imu.q.x,imu.q.y,imu.q.z,imu.q.w),rospy.Time.now(),"imu","base_link")
 
-		except:
-			rospy.logwarn("Unexpected error:" + str(sys.exc_info()[0]))
+			except:
+				rospy.logwarn("Unexpected error:" + str(sys.exc_info()[0]))
 
 	def __init__(self):
 
@@ -45,7 +44,7 @@ class Arduino(object):
 		self._ImuTransformBroadcaster = tf.TransformBroadcaster()
 
 		rospy.init_node('arduinoIMU')
-		port = rospy.get_param("~port", "/dev/ttyS7")
+		port = rospy.get_param("~port", "/dev/ttyUSB0")
 		baudRate = int(rospy.get_param("~baudRate", 38400))
 
 		rospy.loginfo("Starting with serial port: " + port + ", baud rate: " + str(baudRate))

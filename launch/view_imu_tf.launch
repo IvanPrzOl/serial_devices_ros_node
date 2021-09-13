@@ -1,0 +1,11 @@
+<launch>
+
+  <arg name="rviz" default="true" />
+  <node pkg="serial_rosnode" type="view_imu_tf.py" name="view_imu_tf" output="screen">
+  </node>
+
+  <group if="$(arg rviz)">
+    <node launch-prefix="nice" pkg="rviz" type="rviz" name="rviz" args="-d /home/phenocart/.rviz/view_imu_tf.rviz" />
+  </group>
+
+</launch>
