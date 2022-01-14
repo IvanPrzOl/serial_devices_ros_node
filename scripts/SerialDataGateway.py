@@ -32,7 +32,7 @@ class SerialDataGateway(object):
 		try:
 		    self._Serial = serial.Serial(port = self._Port, baudrate = self._Baudrate, bytesize = serial.EIGHTBITS)
 		    self._Serial.flush()
-		    self._Serial.reset_input_buffer
+		    self._Serial.reset_input_buffer()
 		    self._KeepRunning = True
 		    self._ReceiverThread = threading.Thread(target=self._Listen)
 		    self._ReceiverThread.setDaemon(True)
