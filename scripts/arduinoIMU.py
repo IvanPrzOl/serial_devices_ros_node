@@ -34,7 +34,7 @@ class Arduino(object):
 			imu.q = q
 
 			self._imu_pub.publish(imu)
-			#self._ImuTransformBroadcaster.sendTransform((0.2,0.2,0.2),(imu.q.x,imu.q.y,imu.q.z,imu.q.w),rospy.Time.now(),"imu","base_link")
+			self._ImuTransformBroadcaster.sendTransform((0.2,0.2,0.2),(imu.q.x,imu.q.y,imu.q.z,imu.q.w),rospy.Time.now(),"imu","base_link")
 
 		except:
 			rospy.logwarn("Unexpected error:" + str(sys.exc_info()[0]))
@@ -42,7 +42,7 @@ class Arduino(object):
 	def __init__(self):
 
 		self._imu_pub = rospy.Publisher('imu',imuq,queue_size=50)
-		#self._ImuTransformBroadcaster = tf.TransformBroadcaster()
+		self._ImuTransformBroadcaster = tf.TransformBroadcaster()
 
 		rospy.init_node('arduinoIMU')
 		port = rospy.get_param("~port", "/dev/ttyS7")
