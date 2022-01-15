@@ -40,9 +40,9 @@ class imu_raw_parse(object):
 			acc_avel_raw.angular_velocity.z = math.radians(float(lineParts[7]))
 			# shloud be in Teslas
 			# if MPU9250 is used, magnetometer orientation mismatch should be corrected to maintain x from acc and gyro as forward
-			mag_raw.magnetic_field.x = float(lineParts[9])e-7 # x of acc corresponds to y of mag
-			mag_raw.magnetic_field.y = float(lineParts[8])e-7 # y of acc correspond to x of mag
-			mag_raw.magnetic_field.z = -float(lineParts[10])e-7 # z of acc is opposite to z of mag
+			mag_raw.magnetic_field.x = float(lineParts[9])*1e-7 # x of acc corresponds to y of mag
+			mag_raw.magnetic_field.y = float(lineParts[8])*1e-7 # y of acc correspond to x of mag
+			mag_raw.magnetic_field.z = -float(lineParts[10])*1e-7 # z of acc is opposite to z of mag
 
 			self._acc_vel_pub.publish(acc_avel_raw)
 			self._mag_pub.publish(mag_raw)
